@@ -1,10 +1,10 @@
 # Experiments
 
-## Simulated examples (Fig. 2)
+## 2D datasets (Fig. 2)
 
-`simulations/run.py` trains neural OT with the squared Euclidean cost (the solver underlying CellOT, from our
+`simulations/run.py` trains neural W2OT with the squared Euclidean cost (the solver underlying CellOT, from our
 [w1ot](https://github.com/poseidonchan/w1ot) package), OT-SI (`simulations/otsi.py`) and CloneOT on the T-shape and
-rotated-moons examples, and `simulations/figure.py` draws Fig. 2 and summarizes the three training seeds.
+rotated-moons datasets, and `simulations/figure.py` draws Fig. 2 and summarizes the three training seeds.
 
 ```bash
 pip install -e ".[experiments]"
@@ -13,7 +13,7 @@ for task in tshape rotated; do for seed in 0 1 2; do python run.py --task $task 
 python figure.py          # results/simulations/fig2_examples.pdf and summary.csv
 ```
 
-CloneOT uses the default settings of the package, which are the settings of the paper for all simulations and
+CloneOT uses the default settings of the package, which are the settings of the paper for the 2D datasets and all
 single-cell tasks.
 
 ## Single-cell benchmark

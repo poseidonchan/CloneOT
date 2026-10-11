@@ -15,7 +15,7 @@ from cloneot.datasets import rotated_moons, t_shape
 
 RESULTS = Path(__file__).resolve().parents[1]/'results/simulations'
 TASKS = {'tshape': ('T-shape', t_shape), 'rotated': ('Rotated moons', rotated_moons)}
-METHODS = {'NeuralOT': 'Neural OT', 'OT-SI': 'OT-SI', 'CloneOT': 'CloneOT'}
+METHODS = {'NeuralOT': 'Neural W2OT', 'OT-SI': 'OT-SI', 'CloneOT': 'CloneOT'}
 SEEDS = (0, 1, 2)
 SOURCE, TARGET, MOVED, RAY, WRONG = '#1f2a6b', '#f08080', '#7ec8e3', '#9a9a9a', '#d62728'
 

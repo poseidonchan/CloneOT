@@ -1,10 +1,10 @@
-"""The two simulated examples of the paper (Fig. 2): the T-shape task of Howard et al. (2024) and OT-SI's rotated moons.
+"""The two 2D datasets of the paper (Fig. 2): the T-shape dataset of Howard et al. (2024) and OT-SI's rotated moons.
 
-Methods: neural OT with the squared Euclidean cost (W2OT of the w1ot package, the solver underlying CellOT), OT-SI and
-CloneOT, given the same lineage. In the T-shape, the clones (sister cells at one position of a bar) of a random 20% of
-the clones are labeled; in the rotated moons, the moon of every cell. Metrics on 400 new source cells: the fraction of
-predictions that land on the target of their own class (class of the nearest of 4,000 reference target cells) and the
-mean distance to the true fate.
+Methods: neural W2OT with the squared Euclidean cost (from the w1ot package, the solver underlying CellOT), OT-SI and
+CloneOT, given the same correspondences. In the T-shape, the correspondences of a random 20% of the subsets of two
+source and two target points are given; in the rotated moons, the correspondence between each source moon and its
+rotated moon. Metrics on 400 new source points: the fraction of predictions that land on the target of their own class
+(class of the nearest of 4,000 reference target points) and the mean distance to the true target position.
 
     python run.py --task tshape --seed 0          # results/simulations/<task>/<method>_s<seed>.{json,npz}
 """
@@ -41,7 +41,7 @@ def fit(method, source, target, labels, seed):
     elif method == 'OT-SI':
         model = OTSI(OTSIConfig(seed=seed), device=DEVICE).fit(source, target, *labels)
         predict = lambda s: model.predict_mean(s).numpy()
-    else:                                                           # neural OT with the squared Euclidean cost
+    else:                                                           # neural W2OT (squared Euclidean cost)
         from w1ot import w2ot
         torch.manual_seed(seed)
         np.random.seed(seed)

@@ -1,15 +1,17 @@
-"""The two simulated examples of the paper.
+"""The two 2D datasets of the paper, and public lineage-tracing data.
 
-In both, source and target are unpaired samples of two classes, and optimal transport with the squared Euclidean cost
-sends cells to the wrong class:
+In both 2D datasets, source and target are unpaired samples of two classes, and optimal transport with the squared
+Euclidean cost sends points to the wrong class:
 
 * ``t_shape``: the T-shape example of Howard et al. (2024). A vertical bar on the left moves to the right and a
-  horizontal bar on top moves down. Cells come in clones of sister cells at one position of a bar.
+  horizontal bar on top moves down. The points form corresponding subsets of two source and two target points at one
+  position of a bar.
 * ``rotated_moons``: the task of OT-SI (Liu et al., 2020). The target is the two moons rotated by 90 degrees, and the
   only lineage is which source moon corresponds to which rotated moon.
 
-Each function returns a dictionary with the source and target cells, their classes (``source_class``,
-``target_class``), clone labels and the true fate ``fate(x)`` of a source cell.
+Each function returns a dictionary with the source and target points, their classes (``source_class``,
+``target_class``), the labels of the corresponding subsets (``source_clone``, ``target_clone``, which play the role of
+clones) and the true target position ``fate(x)`` of a source point.
 """
 from __future__ import annotations
 
@@ -17,7 +19,7 @@ import numpy as np
 
 
 def t_shape(n: int = 400, cells: int = 2, noise: float = 0.05, seed: int = 0) -> dict:
-    """T-shape example: n source and n target cells in clones of `cells` sister cells, half on each bar."""
+    """T-shape dataset: n source and n target points in corresponding subsets of `cells` points, half on each bar."""
     rng = np.random.default_rng(seed)
     shift = np.array([[14., 0.], [0., -10.]])
     bar = np.repeat([0, 1], n//cells//2)
@@ -33,7 +35,7 @@ def t_shape(n: int = 400, cells: int = 2, noise: float = 0.05, seed: int = 0) ->
 
 def rotated_moons(n: int = 400, angle: float = 90., noise: float = 0.05, seed: int = 0) -> dict:
     """Rotated two moons: the target is an independent sample of the two moons rotated by `angle` degrees about their
-    centre. The clones are the two moons."""
+    centre. The two moons are the corresponding subsets."""
     from sklearn.datasets import make_moons
     centre = np.array([.5, .25])
     a = np.deg2rad(angle)
@@ -45,7 +47,7 @@ def rotated_moons(n: int = 400, angle: float = 90., noise: float = 0.05, seed: i
 
 
 def label_fraction(source_clone, target_clone, fraction: float, seed: int = 0):
-    """Keep the labels of a random `fraction` of the clones and mark all other cells as unlabeled (-1)."""
+    """Keep the labels of a random `fraction` of the subsets (clones) and mark all other points as unlabeled (-1)."""
     clones = np.unique(source_clone)
     shown = np.random.default_rng(seed).permutation(clones)[:int(np.ceil(fraction*len(clones)))]
     index = {c: i for i, c in enumerate(sorted(shown.tolist()))}

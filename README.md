@@ -81,7 +81,7 @@ CellOT.
 
 | Tutorial | Content |
 |---|---|
-| [Simulated examples](docs/tutorials/simulations.ipynb) | The T-shape and rotated-moons examples of the paper, where the squared Euclidean cost transports cells to the wrong class. |
+| [2D datasets](docs/tutorials/simulations.ipynb) | The T-shape and rotated-moons datasets of the paper, on which the squared Euclidean cost transports points to the wrong class. |
 | [Lineage tracing of persister cells](docs/tutorials/watermelon.ipynb) | The full AnnData workflow on the Watermelon study (downloaded from GEO): training, prediction of seen and unseen clones, clone-level evaluation, saving and loading. |
 
 ## Documentation
@@ -96,8 +96,8 @@ sphinx-build docs docs/_build/html
 
 ## Reproducing the paper
 
-The [`experiments/`](experiments) folder contains the scripts of the simulated examples of the paper (neural OT, OT-SI
-and CloneOT on the T-shape and rotated-moons examples). See [`experiments/README.md`](experiments/README.md).
+The [`experiments/`](experiments) folder contains the scripts of the 2D datasets of the paper (neural W2OT, OT-SI and
+CloneOT on the T-shape and rotated-moons datasets). See [`experiments/README.md`](experiments/README.md).
 
 ## Contact
 
