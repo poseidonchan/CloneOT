@@ -200,7 +200,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="tutorials/simulations.html">Simulated examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/simulations.html">2D datasets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/watermelon.html">Lineage tracing of drug-tolerant persister cells</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
@@ -252,15 +252,15 @@
           <section class="tex2jax_ignore mathjax_ignore" id="reproducing-the-paper">
 <h1>Reproducing the paper<a class="headerlink" href="#reproducing-the-paper" title="Link to this heading">¶</a></h1>
 <p>The <a class="reference external" href="https://github.com/poseidonchan/CloneOT/tree/main/experiments"><code class="docutils literal notranslate"><span class="pre">experiments/</span></code></a> folder of the repository contains
-the scripts of the simulated examples of the paper (Fig. 2): neural OT with the squared Euclidean cost, OT-SI and
-CloneOT on the T-shape and rotated-moons examples, each with three training seeds.</p>
+the scripts of the 2D datasets of the paper (Fig. 2): neural W2OT with the squared Euclidean cost, OT-SI and CloneOT on
+the T-shape and rotated-moons datasets, each with three training seeds.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[experiments]&quot;</span>
 <span class="nb">cd</span><span class="w"> </span>experiments/simulations
 <span class="k">for</span><span class="w"> </span>task<span class="w"> </span><span class="k">in</span><span class="w"> </span>tshape<span class="w"> </span>rotated<span class="p">;</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="k">for</span><span class="w"> </span>seed<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="m">2</span><span class="p">;</span><span class="w"> </span><span class="k">do</span><span class="w"> </span>python<span class="w"> </span>run.py<span class="w"> </span>--task<span class="w"> </span><span class="nv">$task</span><span class="w"> </span>--seed<span class="w"> </span><span class="nv">$seed</span><span class="p">;</span><span class="w"> </span><span class="k">done</span><span class="p">;</span><span class="w"> </span><span class="k">done</span>
 python<span class="w"> </span>figure.py
 </pre></div>
 </div>
-<p>The default settings of CloneOT are the settings of the paper, shared by all simulations and single-cell tasks. The
+<p>The default settings of CloneOT are the settings of the paper, shared by the 2D datasets and all single-cell tasks. The
 <a class="reference internal" href="tutorials/watermelon.html"><span class="doc std std-doc">Watermelon tutorial</span></a> shows the complete single-cell workflow, from the download of the public
 data to the clone-level evaluation of seen and unseen clones. The single-cell datasets of the paper are public:
 Watermelon (GEO GSE150949), ClonMapper (GSE291678) and ReSisTrace (GSE223003).</p>

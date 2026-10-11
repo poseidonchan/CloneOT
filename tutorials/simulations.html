@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="Lineage tracing of drug-tolerant persister cells" href="watermelon.html"><link rel="prev" title="Method" href="../method.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>Simulated examples - CloneOT</title>
+        <title>2D datasets - CloneOT</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
@@ -200,7 +200,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul class="current">
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Simulated examples</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">2D datasets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="watermelon.html">Lineage tracing of drug-tolerant persister cells</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
@@ -249,17 +249,19 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <section class="tex2jax_ignore mathjax_ignore" id="simulated-examples">
-<h1>Simulated examples<a class="headerlink" href="#simulated-examples" title="Link to this heading">¶</a></h1>
-<p>This tutorial reproduces the two simulated examples of the paper. In both, the source and target cells are unpaired
-samples of two classes, and optimal transport with the squared Euclidean cost sends cells to the wrong class. CloneOT
-learns the cost from a few clones and maps every new cell to its own class.</p>
+          <section class="tex2jax_ignore mathjax_ignore" id="d-datasets">
+<h1>2D datasets<a class="headerlink" href="#d-datasets" title="Link to this heading">¶</a></h1>
+<p>This tutorial reproduces the two 2D datasets of the paper. In both, the source and target points are unpaired samples
+of two classes, and optimal transport with the squared Euclidean cost sends points to the wrong class. CloneOT learns
+the cost from correspondences between subsets of source and target points, which play the role of clones.</p>
 <ul class="simple">
-<li><p><strong>T-shape</strong> (Howard et al., 2024): a vertical bar on the left moves to the right and a horizontal bar on top moves
-down. Moving the left bar down and the top bar to the right is cheaper. The cells form clones of two sister cells,
-and 20% of the clones are labeled.</p></li>
-<li><p><strong>Rotated moons</strong> (OT-SI): the target is the two moons rotated by 90 degrees, and the only lineage is which source
-moon corresponds to which rotated moon.</p></li>
+<li><p><strong>T-shape</strong> (Howard et al., 2024) shows that the cost must be learned. A vertical bar on the left moves to the right
+and a horizontal bar on top moves down, but moving the left bar down and the top bar to the right is cheaper under
+the squared Euclidean cost. The points form subsets of two source and two target points at one position of a bar,
+and the correspondences of 20% of the subsets are given.</p></li>
+<li><p><strong>Rotated moons</strong> (OT-SI) is the dataset that the discrete inverse OT solver OT-SI uses to learn costs from subset
+correspondence. The target is the two moons rotated by 90 degrees, and the only correspondence is between each source
+moon and its rotated moon.</p></li>
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -273,25 +275,25 @@ moon corresponds to which rotated moon.</p></li>
 </div>
 <section id="t-shape">
 <h2>T-shape<a class="headerlink" href="#t-shape" title="Link to this heading">¶</a></h2>
-<p>We draw 400 training cells, 400 new source cells for testing, and a large reference sample of target cells that
+<p>We draw 400 training points, 400 new source points for testing, and a large reference sample of target points that
 tells which class a prediction lands on.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="p">,</span> <span class="n">test</span><span class="p">,</span> <span class="n">reference</span> <span class="o">=</span> <span class="n">t_shape</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">t_shape</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">100</span><span class="p">),</span> <span class="n">t_shape</span><span class="p">(</span><span class="mi">4000</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
 <span class="n">labels</span> <span class="o">=</span> <span class="n">label_fraction</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;source_clone&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;target_clone&#39;</span><span class="p">],</span> <span class="n">fraction</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;source&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2"> source and </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;target&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2"> target cells, &quot;</span>
-      <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">labels</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">{</span><span class="o">-</span><span class="mi">1</span><span class="p">})</span><span class="si">}</span><span class="s2"> labeled clones&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;source&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2"> source and </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;target&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2"> target points, &quot;</span>
+      <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">labels</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">{</span><span class="o">-</span><span class="mi">1</span><span class="p">})</span><span class="si">}</span><span class="s2"> corresponding subsets given&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>400 source and 400 target cells, 40 labeled clones
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>400 source and 400 target points, 40 corresponding subsets given
 </pre></div>
 </div>
 </div>
 </div>
-<p>Without clone labels, CloneOT is entropic optimal transport with the squared Euclidean cost, the solver underlying
-CellOT. With the labels, it learns the cost.</p>
+<p>Without correspondences, CloneOT is entropic optimal transport with the squared Euclidean cost, the solver underlying
+CellOT. With the correspondences, it learns the cost.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">euclidean</span> <span class="o">=</span> <span class="n">cot</span><span class="o">.</span><span class="n">CloneOT</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;source&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;target&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">fit_map</span><span class="p">()</span>
@@ -324,14 +326,14 @@ CellOT. With the labels, it learns the cost.</p>
 </div>
 </div>
 <p>Red rays end on the wrong bar. The squared Euclidean cost sends the left bar down and the top bar to the right,
-whereas CloneOT places every new cell on its own bar and recovers the translation of each bar.</p>
+whereas CloneOT places every new point on its own bar and recovers the translation of each bar.</p>
 </section>
 <section id="rotated-moons">
 <h2>Rotated moons<a class="headerlink" href="#rotated-moons" title="Link to this heading">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="p">,</span> <span class="n">test</span><span class="p">,</span> <span class="n">reference</span> <span class="o">=</span> <span class="n">rotated_moons</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">rotated_moons</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">100</span><span class="p">),</span> <span class="n">rotated_moons</span><span class="p">(</span><span class="mi">4000</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
-<span class="n">labels</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;source_clone&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;target_clone&#39;</span><span class="p">])</span>        <span class="c1"># the two moons are the two clones</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;source_clone&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;target_clone&#39;</span><span class="p">])</span>        <span class="c1"># the two moons are the corresponding subsets</span>
 <span class="n">euclidean</span> <span class="o">=</span> <span class="n">cot</span><span class="o">.</span><span class="n">CloneOT</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;source&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;target&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">fit_map</span><span class="p">()</span>
 <span class="n">cloneot</span> <span class="o">=</span> <span class="n">cot</span><span class="o">.</span><span class="n">CloneOT</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;source&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;target&#39;</span><span class="p">],</span> <span class="o">*</span><span class="n">labels</span><span class="p">)</span><span class="o">.</span><span class="n">fit_map</span><span class="p">()</span>
 
@@ -349,8 +351,8 @@ whereas CloneOT places every new cell on its own bar and recovers the translatio
 <img alt="../_images/281e73383cb34d38b3c7a3625cdcc9502eb301262399a1ab186144ee2b199be0.png" src="../_images/281e73383cb34d38b3c7a3625cdcc9502eb301262399a1ab186144ee2b199be0.png" />
 </div>
 </div>
-<p>The only supervision is which moon corresponds to which rotated moon, two clones without any pairs of cells.
-CloneOT learns a cost under which the cheapest transport is the rotation itself.</p>
+<p>The only supervision is which moon corresponds to which rotated moon, without any pairs of points. CloneOT learns a
+cost under which the cheapest transport is the rotation itself.</p>
 </section>
 </section>
 
@@ -409,7 +411,7 @@ CloneOT learns a cost under which the cheapest transport is the rotation itself.
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">Simulated examples</a><ul>
+<li><a class="reference internal" href="#">2D datasets</a><ul>
 <li><a class="reference internal" href="#t-shape">T-shape</a></li>
 <li><a class="reference internal" href="#rotated-moons">Rotated moons</a></li>
 </ul>

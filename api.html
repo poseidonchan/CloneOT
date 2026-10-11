@@ -200,7 +200,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="tutorials/simulations.html">Simulated examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/simulations.html">2D datasets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/watermelon.html">Lineage tracing of drug-tolerant persister cells</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
@@ -670,21 +670,23 @@ evaluation genes of the paper.</p>
 </section>
 <section id="module-cloneot.datasets">
 <span id="datasets"></span><h2>Datasets<a class="headerlink" href="#module-cloneot.datasets" title="Link to this heading">¶</a></h2>
-<p>The two simulated examples of the paper.</p>
-<p>In both, source and target are unpaired samples of two classes, and optimal transport with the squared Euclidean cost
-sends cells to the wrong class:</p>
+<p>The two 2D datasets of the paper, and public lineage-tracing data.</p>
+<p>In both 2D datasets, source and target are unpaired samples of two classes, and optimal transport with the squared
+Euclidean cost sends points to the wrong class:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">t_shape</span></code>: the T-shape example of Howard et al. (2024). A vertical bar on the left moves to the right and a
-horizontal bar on top moves down. Cells come in clones of sister cells at one position of a bar.</p></li>
+horizontal bar on top moves down. The points form corresponding subsets of two source and two target points at one
+position of a bar.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">rotated_moons</span></code>: the task of OT-SI (Liu et al., 2020). The target is the two moons rotated by 90 degrees, and the
 only lineage is which source moon corresponds to which rotated moon.</p></li>
 </ul>
-<p>Each function returns a dictionary with the source and target cells, their classes (<code class="docutils literal notranslate"><span class="pre">source_class</span></code>,
-<code class="docutils literal notranslate"><span class="pre">target_class</span></code>), clone labels and the true fate <code class="docutils literal notranslate"><span class="pre">fate(x)</span></code> of a source cell.</p>
+<p>Each function returns a dictionary with the source and target points, their classes (<code class="docutils literal notranslate"><span class="pre">source_class</span></code>,
+<code class="docutils literal notranslate"><span class="pre">target_class</span></code>), the labels of the corresponding subsets (<code class="docutils literal notranslate"><span class="pre">source_clone</span></code>, <code class="docutils literal notranslate"><span class="pre">target_clone</span></code>, which play the role of
+clones) and the true target position <code class="docutils literal notranslate"><span class="pre">fate(x)</span></code> of a source point.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="cloneot.datasets.t_shape">
 <span class="sig-prename descclassname"><span class="pre">cloneot.datasets.</span></span><span class="sig-name descname"><span class="pre">t_shape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">400</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cells</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloneot/datasets.html#t_shape"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloneot.datasets.t_shape" title="Link to this definition">¶</a></dt>
-<dd><p>T-shape example: n source and n target cells in clones of <cite>cells</cite> sister cells, half on each bar.</p>
+<dd><p>T-shape dataset: n source and n target points in corresponding subsets of <cite>cells</cite> points, half on each bar.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></span></p>
@@ -696,7 +698,7 @@ only lineage is which source moon corresponds to which rotated moon.</p></li>
 <dt class="sig sig-object py" id="cloneot.datasets.rotated_moons">
 <span class="sig-prename descclassname"><span class="pre">cloneot.datasets.</span></span><span class="sig-name descname"><span class="pre">rotated_moons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">400</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">90.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloneot/datasets.html#rotated_moons"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloneot.datasets.rotated_moons" title="Link to this definition">¶</a></dt>
 <dd><p>Rotated two moons: the target is an independent sample of the two moons rotated by <cite>angle</cite> degrees about their
-centre. The clones are the two moons.</p>
+centre. The two moons are the corresponding subsets.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></span></p>
@@ -707,7 +709,7 @@ centre. The clones are the two moons.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="cloneot.datasets.label_fraction">
 <span class="sig-prename descclassname"><span class="pre">cloneot.datasets.</span></span><span class="sig-name descname"><span class="pre">label_fraction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_clone</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_clone</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fraction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloneot/datasets.html#label_fraction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloneot.datasets.label_fraction" title="Link to this definition">¶</a></dt>
-<dd><p>Keep the labels of a random <cite>fraction</cite> of the clones and mark all other cells as unlabeled (-1).</p>
+<dd><p>Keep the labels of a random <cite>fraction</cite> of the subsets (clones) and mark all other points as unlabeled (-1).</p>
 </dd></dl>
 
 <dl class="py function">

@@ -199,7 +199,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../tutorials/simulations.html">Simulated examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/simulations.html">2D datasets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/watermelon.html">Lineage tracing of drug-tolerant persister cells</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
@@ -239,18 +239,20 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for cloneot.datasets</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;The two simulated examples of the paper.</span>
+<span></span><span class="sd">&quot;&quot;&quot;The two 2D datasets of the paper, and public lineage-tracing data.</span>
 
-<span class="sd">In both, source and target are unpaired samples of two classes, and optimal transport with the squared Euclidean cost</span>
-<span class="sd">sends cells to the wrong class:</span>
+<span class="sd">In both 2D datasets, source and target are unpaired samples of two classes, and optimal transport with the squared</span>
+<span class="sd">Euclidean cost sends points to the wrong class:</span>
 
 <span class="sd">* ``t_shape``: the T-shape example of Howard et al. (2024). A vertical bar on the left moves to the right and a</span>
-<span class="sd">  horizontal bar on top moves down. Cells come in clones of sister cells at one position of a bar.</span>
+<span class="sd">  horizontal bar on top moves down. The points form corresponding subsets of two source and two target points at one</span>
+<span class="sd">  position of a bar.</span>
 <span class="sd">* ``rotated_moons``: the task of OT-SI (Liu et al., 2020). The target is the two moons rotated by 90 degrees, and the</span>
 <span class="sd">  only lineage is which source moon corresponds to which rotated moon.</span>
 
-<span class="sd">Each function returns a dictionary with the source and target cells, their classes (``source_class``,</span>
-<span class="sd">``target_class``), clone labels and the true fate ``fate(x)`` of a source cell.</span>
+<span class="sd">Each function returns a dictionary with the source and target points, their classes (``source_class``,</span>
+<span class="sd">``target_class``), the labels of the corresponding subsets (``source_clone``, ``target_clone``, which play the role of</span>
+<span class="sd">clones) and the true target position ``fate(x)`` of a source point.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
@@ -260,7 +262,7 @@
 <div class="viewcode-block" id="t_shape">
 <a class="viewcode-back" href="../../api.html#cloneot.datasets.t_shape">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">t_shape</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">400</span><span class="p">,</span> <span class="n">cells</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">noise</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span> <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;T-shape example: n source and n target cells in clones of `cells` sister cells, half on each bar.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;T-shape dataset: n source and n target points in corresponding subsets of `cells` points, half on each bar.&quot;&quot;&quot;</span>
     <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
     <span class="n">shift</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">14.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="o">-</span><span class="mf">10.</span><span class="p">]])</span>
     <span class="n">bar</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">n</span><span class="o">//</span><span class="n">cells</span><span class="o">//</span><span class="mi">2</span><span class="p">)</span>
@@ -279,7 +281,7 @@
 <a class="viewcode-back" href="../../api.html#cloneot.datasets.rotated_moons">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">rotated_moons</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">400</span><span class="p">,</span> <span class="n">angle</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">90.</span><span class="p">,</span> <span class="n">noise</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span> <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Rotated two moons: the target is an independent sample of the two moons rotated by `angle` degrees about their</span>
-<span class="sd">    centre. The clones are the two moons.&quot;&quot;&quot;</span>
+<span class="sd">    centre. The two moons are the corresponding subsets.&quot;&quot;&quot;</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_moons</span>
     <span class="n">centre</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">.5</span><span class="p">,</span> <span class="mf">.25</span><span class="p">])</span>
     <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
@@ -294,7 +296,7 @@
 <div class="viewcode-block" id="label_fraction">
 <a class="viewcode-back" href="../../api.html#cloneot.datasets.label_fraction">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">label_fraction</span><span class="p">(</span><span class="n">source_clone</span><span class="p">,</span> <span class="n">target_clone</span><span class="p">,</span> <span class="n">fraction</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Keep the labels of a random `fraction` of the clones and mark all other cells as unlabeled (-1).&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Keep the labels of a random `fraction` of the subsets (clones) and mark all other points as unlabeled (-1).&quot;&quot;&quot;</span>
     <span class="n">clones</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">source_clone</span><span class="p">)</span>
     <span class="n">shown</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">clones</span><span class="p">)[:</span><span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">fraction</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">clones</span><span class="p">)))]</span>
     <span class="n">index</span> <span class="o">=</span> <span class="p">{</span><span class="n">c</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">shown</span><span class="o">.</span><span class="n">tolist</span><span class="p">()))}</span>
