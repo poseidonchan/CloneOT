@@ -1,5 +1,6 @@
 # CloneOT: predicting clone-specific perturbation responses with lineage-supervised neural inverse optimal transport
 
+[![Documentation](https://img.shields.io/badge/docs-poseidonchan.github.io%2FCloneOT-blue)](https://poseidonchan.github.io/CloneOT/)
 ![Python](https://img.shields.io/badge/python-3.10%2B-blue)
 ![License](https://img.shields.io/badge/license-GPL--3.0-green)
 
@@ -85,7 +86,8 @@ CellOT.
 
 ## Documentation
 
-The documentation (installation, quick start, method, tutorials and API reference) is in [`docs/`](docs). Build it with
+The documentation, with installation, quick start, method, tutorials and API reference, is at
+**https://poseidonchan.github.io/CloneOT/**. To build it locally,
 
 ```bash
 pip install -e ".[docs]"
@@ -94,18 +96,8 @@ sphinx-build docs docs/_build/html
 
 ## Reproducing the paper
 
-The [`experiments/`](experiments) folder contains the scripts that reproduce every experiment, figure and table of the
-paper. See [`experiments/README.md`](experiments/README.md).
-
-## Citation
-
-```bibtex
-@article{chen2026cloneot,
-  title  = {CloneOT: predicting clone-specific perturbation responses with lineage-supervised neural inverse optimal transport},
-  author = {Chen, Yanshuo and Chen, Wei and Huang, Heng},
-  year   = {2026}
-}
-```
+The [`experiments/`](experiments) folder contains the scripts of the simulated examples of the paper (neural OT, OT-SI
+and CloneOT on the T-shape and rotated-moons examples). See [`experiments/README.md`](experiments/README.md).
 
 ## Contact
 

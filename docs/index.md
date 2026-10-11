@@ -45,5 +45,7 @@ tutorials/watermelon
 
 api
 reproducibility
-citation
 ```
+
+Questions and issues are welcome on [GitHub](https://github.com/poseidonchan/CloneOT/issues) or by email to
+cys@umd.edu.

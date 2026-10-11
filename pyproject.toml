@@ -37,7 +37,7 @@ experiments = ["pot>=0.9", "w1ot @ git+https://github.com/poseidonchan/w1ot.git"
 
 [project.urls]
 Homepage = "https://github.com/poseidonchan/CloneOT"
-Documentation = "https://github.com/poseidonchan/CloneOT/tree/main/docs"
+Documentation = "https://poseidonchan.github.io/CloneOT/"
 Issues = "https://github.com/poseidonchan/CloneOT/issues"
 
 [tool.setuptools.packages.find]
