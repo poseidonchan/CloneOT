@@ -3,11 +3,10 @@
 In both 2D datasets, source and target are unpaired samples of two classes, and optimal transport with the squared
 Euclidean cost sends points to the wrong class:
 
-* ``t_shape``: the T-shape example of Howard et al. (2024). A vertical bar on the left moves to the right and a
-  horizontal bar on top moves down. The points form corresponding subsets of two source and two target points at one
-  position of a bar.
-* ``rotated_moons``: the task of OT-SI (Liu et al., 2020). The target is the two moons rotated by 90 degrees, and the
-  only lineage is which source moon corresponds to which rotated moon.
+* ``t_shape``: the T-shape dataset. A vertical bar on the left moves to the right and a horizontal bar on top moves
+  down. The points form corresponding subsets of two source and two target points at one position of a bar.
+* ``rotated_moons``: the rotated-moons dataset. The target is the two moons rotated by 90 degrees, and the only
+  correspondence is between each source moon and its rotated moon.
 
 Each function returns a dictionary with the source and target points, their classes (``source_class``,
 ``target_class``), the labels of the corresponding subsets (``source_clone``, ``target_clone``, which play the role of

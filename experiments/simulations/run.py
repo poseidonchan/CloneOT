@@ -1,4 +1,4 @@
-"""The two 2D datasets of the paper (Fig. 2): the T-shape dataset of Howard et al. (2024) and OT-SI's rotated moons.
+"""The two 2D datasets of the paper (Fig. 2): the T-shape dataset and the rotated-moons dataset.
 
 Methods: neural W2OT with the squared Euclidean cost (from the w1ot package, the solver underlying CellOT), OT-SI and
 CloneOT, given the same correspondences. In the T-shape, the correspondences of a random 20% of the subsets of two
