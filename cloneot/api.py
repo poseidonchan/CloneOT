@@ -77,7 +77,7 @@ class CloneOTModel:
             raise ValueError(f'no cells with {condition_key} == {source!r} or {target!r}')
         self.adata = adata[condition.isin([self.source, self.target]).to_numpy()]
         self.genes = None
-        self.vae = self.ot = None
+        self.vae = self.ot = self._ranking = None
 
     # ----------------------------------------------------------------------------------------------- preprocessing
     def _matrix(self, adata):
@@ -137,6 +137,7 @@ class CloneOTModel:
         verbose : bool
             Show progress bars.
         """
+        self._ranking = None
         if representation is not None:
             self.genes, self.vae, self.vae_config = representation.genes, representation.vae, representation.vae_config
         else:
@@ -163,12 +164,16 @@ class CloneOTModel:
 
     def response_genes(self, n_genes: int = 50) -> list[str]:
         """The `n_genes` model genes with the largest t-statistics between the training target and source cells (the
-        evaluation genes of the paper)."""
+        evaluation genes of the paper). The ranking is computed once and saved with the model."""
         import anndata as ad
-        source, target = self._split(self.adata)
-        var = pd.DataFrame(index=self.genes)
-        return response_genes(ad.AnnData(self.log_expression(source), var=var),
-                              ad.AnnData(self.log_expression(target), var=var), n_genes)
+        if getattr(self, '_ranking', None) is None:
+            if self.adata is None:
+                raise RuntimeError('the training cells are needed: pass them to CloneOTModel.load(folder, adata)')
+            source, target = self._split(self.adata)
+            var = pd.DataFrame(index=self.genes)
+            self._ranking = response_genes(ad.AnnData(self.log_expression(source), var=var),
+                                           ad.AnnData(self.log_expression(target), var=var), len(self.genes))
+        return list(self._ranking[:n_genes])
 
     def _selection(self, validation, target_expression, n_genes):
         """Validation criterion of the paper (lower is better)."""
@@ -230,6 +235,8 @@ class CloneOTModel:
         self.ot.save(folder/'cloneot.pt')
         meta = dict(condition_key=self.condition_key, source=self.source, target=self.target, clone_key=self.clone_key,
                     layer=self.layer, n_top_genes=self.n_top_genes, genes=self.genes, vae_config=asdict(self.vae_config))
+        if self.adata is not None or getattr(self, '_ranking', None) is not None:
+            meta['response_ranking'] = self.response_genes(len(self.genes))
         (folder/'model.json').write_text(json.dumps(meta, indent=1))
 
     @classmethod
@@ -246,4 +253,5 @@ class CloneOTModel:
         model.ot = CloneOT.load(folder/'cloneot.pt', device=str(model.device))
         model.config = model.ot.config
         model.adata = adata
+        model._ranking = meta.get('response_ranking')
         return model

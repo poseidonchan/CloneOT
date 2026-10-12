@@ -61,3 +61,39 @@ def clone_deviations(predicted, observed, clone_key: str, genes: Optional[Sequen
     for side in ('top', 'right'):
         ax.spines[side].set_visible(False)
     return ax
+
+
+METRIC_LABELS = {'l2': r'$\ell_2$ error', 'r2': r'$r^2$', 'energy': 'energy score'}
+
+
+def paired_scores(baseline, scores, metric: str = 'l2', labels: Sequence[str] = ('Baseline', 'CloneOT'), ax=None,
+                  color: str = '#51A9D6', other: str = '#C7BBAF'):
+    """Per-clone comparison of two methods on the same clones: the metric of `baseline` (x-axis) against that of
+    `scores` (y-axis), one point per clone, from data frames returned by :func:`cloneot.metrics.evaluate`.
+
+    Clones on which the second method is better are colored, and the panel reports their fraction and the p-value of
+    the two-sided Wilcoxon signed-rank test.
+    """
+    import matplotlib.pyplot as plt
+    from scipy.stats import wilcoxon
+    ax = ax or plt.gca()
+    joined = baseline[['clone', metric]].merge(scores[['clone', metric]], on='clone', suffixes=('_x', '_y')).dropna()
+    x, y = joined[metric+'_x'].to_numpy(), joined[metric+'_y'].to_numpy()
+    better = y > x if metric == 'r2' else y < x
+    ax.scatter(x[~better], y[~better], s=10, c=other, lw=0, alpha=.8)
+    ax.scatter(x[better], y[better], s=10, c=color, lw=0, alpha=.8)
+    low, high = min(x.min(), y.min()), max(x.max(), y.max())
+    pad = .04*(high-low)
+    ax.plot([low-pad, high+pad], [low-pad, high+pad], ls='--', lw=.6, c='#777777')
+    ax.set_xlim(low-pad, high+pad)
+    ax.set_ylim(low-pad, high+pad)
+    ax.set_aspect('equal')
+    name = METRIC_LABELS.get(metric, metric)
+    ax.set_xlabel(f'{labels[0]}, {name}')
+    ax.set_ylabel(f'{labels[1]}, {name}')
+    p = wilcoxon(y-x).pvalue
+    ax.text(.04, .96, f'{labels[1]} better for {better.mean():.0%}\nof {len(x)} clones (p = {p:.0e})',
+            transform=ax.transAxes, va='top', fontsize=9, color=color if better.mean() > .5 else 'black')
+    for side in ('top', 'right'):
+        ax.spines[side].set_visible(False)
+    return ax

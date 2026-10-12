@@ -32,6 +32,17 @@ def test_train_predict_save_load(adata, tmp_path):
     model.save(tmp_path/'model')
     loaded = cot.CloneOTModel.load(tmp_path/'model', device='cpu')
     assert np.allclose(loaded.predict(adata).X, predicted.X, atol=1e-5)
+    assert loaded.response_genes(10) == model.response_genes(10)
+
+
+def test_paired_scores():
+    import matplotlib
+    matplotlib.use('Agg')
+    rng = np.random.default_rng(0)
+    base = pd.DataFrame({'clone': range(30), 'l2': rng.uniform(2, 5, 30)})
+    ours = base.assign(l2=base.l2-rng.uniform(0, 1, 30))
+    ax = cot.pl.paired_scores(base, ours, metric='l2', labels=('Without lineage', 'CloneOT'))
+    assert 'better for 100%' in ax.texts[0].get_text()
 
 
 def test_missing_condition(adata):
