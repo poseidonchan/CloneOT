@@ -275,7 +275,9 @@ counts or log-normalized expression are both accepted.</p>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">scores</span></code> holds the <span class="math notranslate nohighlight">\(\ell_2\)</span> distance and <span class="math notranslate nohighlight">\(r^2\)</span> between the predicted and observed clone means and the energy score of
 every clone, and <code class="docutils literal notranslate"><span class="pre">r</span></code> is the clone-specific correlation, which measures how well the predictions capture the differences
-between clones. Save and reload a trained model with <code class="docutils literal notranslate"><span class="pre">model.save(&quot;folder&quot;)</span></code> and <code class="docutils literal notranslate"><span class="pre">cot.CloneOTModel.load(&quot;folder&quot;)</span></code>.</p>
+between clones. To compare CloneOT with another model clone by clone, for example CloneOT without lineage
+(<code class="docutils literal notranslate"><span class="pre">clone_key=None</span></code>), pass both <code class="docutils literal notranslate"><span class="pre">scores</span></code> tables to <code class="docutils literal notranslate"><span class="pre">cot.pl.paired_scores(baseline_scores,</span> <span class="pre">scores,</span> <span class="pre">metric=&quot;l2&quot;)</span></code>. Save and
+reload a trained model with <code class="docutils literal notranslate"><span class="pre">model.save(&quot;folder&quot;)</span></code> and <code class="docutils literal notranslate"><span class="pre">cot.CloneOTModel.load(&quot;folder&quot;)</span></code>.</p>
 </section>
 <section id="on-arrays">
 <h2>On arrays<a class="headerlink" href="#on-arrays" title="Link to this heading">¶</a></h2>

@@ -57,5 +57,5 @@ The fields of `CloneOTConfig` and their defaults (the settings of the paper):
 
 ```{eval-rst}
 .. automodule:: cloneot.plotting
-   :members: transport, clone_deviations
+   :members: transport, clone_deviations, paired_scores
 ```

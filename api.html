@@ -324,7 +324,7 @@ target cell.</p></li>
 <dt class="sig sig-object py" id="cloneot.CloneOTModel.response_genes">
 <span class="sig-name descname"><span class="pre">response_genes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_genes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">50</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloneot/api.html#CloneOTModel.response_genes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloneot.CloneOTModel.response_genes" title="Link to this definition">¶</a></dt>
 <dd><p>The <cite>n_genes</cite> model genes with the largest t-statistics between the training target and source cells (the
-evaluation genes of the paper).</p>
+evaluation genes of the paper). The ranking is computed once and saved with the model.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</span></p>
@@ -789,6 +789,15 @@ cell to its prediction (red if <cite>correct</cite> is False for that cell).</p>
 every clone and gene, annotated with the clone-specific correlation r.</p>
 </dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="cloneot.plotting.paired_scores">
+<span class="sig-prename descclassname"><span class="pre">cloneot.plotting.</span></span><span class="sig-name descname"><span class="pre">paired_scores</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">baseline</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scores</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'l2'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">('Baseline',</span> <span class="pre">'CloneOT')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'#51A9D6'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'#C7BBAF'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cloneot/plotting.html#paired_scores"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cloneot.plotting.paired_scores" title="Link to this definition">¶</a></dt>
+<dd><p>Per-clone comparison of two methods on the same clones: the metric of <cite>baseline</cite> (x-axis) against that of
+<cite>scores</cite> (y-axis), one point per clone, from data frames returned by <a class="reference internal" href="#cloneot.metrics.evaluate" title="cloneot.metrics.evaluate"><code class="xref py py-func docutils literal notranslate"><span class="pre">cloneot.metrics.evaluate()</span></code></a>.</p>
+<p>Clones on which the second method is better are colored, and the panel reports their fraction and the p-value of
+the two-sided Wilcoxon signed-rank test.</p>
+</dd></dl>
+
 </section>
 </section>
 
@@ -907,6 +916,7 @@ every clone and gene, annotated with the clone-specific correlation r.</p>
 <li><a class="reference internal" href="#module-cloneot.plotting">Plotting</a><ul>
 <li><a class="reference internal" href="#cloneot.plotting.transport"><code class="docutils literal notranslate"><span class="pre">transport()</span></code></a></li>
 <li><a class="reference internal" href="#cloneot.plotting.clone_deviations"><code class="docutils literal notranslate"><span class="pre">clone_deviations()</span></code></a></li>
+<li><a class="reference internal" href="#cloneot.plotting.paired_scores"><code class="docutils literal notranslate"><span class="pre">paired_scores()</span></code></a></li>
 </ul>
 </li>
 </ul>

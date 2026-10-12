@@ -26,7 +26,9 @@ scores, r = cot.metrics.evaluate(predicted, observed, clone_key="clone", genes=g
 
 `scores` holds the $\ell_2$ distance and $r^2$ between the predicted and observed clone means and the energy score of
 every clone, and `r` is the clone-specific correlation, which measures how well the predictions capture the differences
-between clones. Save and reload a trained model with `model.save("folder")` and `cot.CloneOTModel.load("folder")`.
+between clones. To compare CloneOT with another model clone by clone, for example CloneOT without lineage
+(`clone_key=None`), pass both `scores` tables to `cot.pl.paired_scores(baseline_scores, scores, metric="l2")`. Save and
+reload a trained model with `model.save("folder")` and `cot.CloneOTModel.load("folder")`.
 
 ## On arrays
 
